@@ -9,8 +9,7 @@ import type {
 export class DukanApi implements ICredentialType {
 	name = 'dukanApi';
 	displayName = 'Dukan API';
-	icon: Icon = { light: 'file:dukan.svg', dark: 'file:dukan.dark.svg' };
-
+	icon: Icon = { light: 'file:dukan-logo.svg', dark: 'file:dukan-logo.dark.svg' };
 	// Link to your community node's README
 	documentationUrl = 'https://github.com/org/-dukan?tab=readme-ov-file#credentials';
 

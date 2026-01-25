@@ -1,12 +1,12 @@
 import { NodeConnectionTypes, type INodeType, type INodeTypeDescription } from 'n8n-workflow';
-import { userDescription } from './resources/user';
-import { companyDescription } from './resources/company';
+import { teamUserDescription } from './resources/teamUser';
+import { orderDescription } from './resources/order';
 
 export class Dukan implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Dukan',
 		name: 'dukan',
-		icon: { light: 'file:dukan.svg', dark: 'file:dukan.dark.svg' },
+		icon: { light: 'file:dukan-logo.svg', dark: 'file:dukan-logo.dark.svg' },
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
@@ -19,10 +19,11 @@ export class Dukan implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'dukanApi', required: true }],
 		requestDefaults: {
-			baseURL: 'https://api.example.com/v2',
+			baseURL: '={{$credentials.baseUrl}}/v1',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
+				'X-AFFLITA-JWT': '={{$credentials.apiKey}}',
 			},
 		},
 		properties: [
@@ -33,18 +34,22 @@ export class Dukan implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
-						name: 'User',
-						value: 'user',
+						name: 'Order',
+						value: 'order',
 					},
 					{
-						name: 'Company',
-						value: 'company',
+						name: 'Product',
+						value: 'product',
+					},
+					{
+						name: 'Team User',
+						value: 'teamUser',
 					},
 				],
-				default: 'user',
+				default: 'order',
 			},
-			...userDescription,
-			...companyDescription,
+			...orderDescription,
+			...teamUserDescription,
 		],
 	};
 }
