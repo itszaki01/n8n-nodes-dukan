@@ -2,10 +2,10 @@ import type { INodeProperties } from 'n8n-workflow';
 
 const showOnlyForUserGetMany = {
 	operation: ['getMany'],
-	resource: ['order'],
+	resource: ['teamUser'],
 };
 
-export const orderGetManyDescription: INodeProperties[] = [
+export const teamUserGetManyDescription: INodeProperties[] = [
 	{
 		displayName: 'Page Number',
 		name: 'page',

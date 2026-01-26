@@ -20,6 +20,7 @@ export const teamUserCreateDescription: INodeProperties[] = [
 			send: {
 				type: 'body',
 				property: 'name',
+				value: '={{$parameter.name !== "" ? $parameter.name : undefined}}',
 			},
 		},
 	},

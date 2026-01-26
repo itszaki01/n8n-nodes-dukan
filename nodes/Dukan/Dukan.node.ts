@@ -1,6 +1,10 @@
 import { NodeConnectionTypes, type INodeType, type INodeTypeDescription } from 'n8n-workflow';
-import { teamUserDescription } from './resources/teamUser';
+import { cityDescription } from './resources/city';
 import { orderDescription } from './resources/order';
+import { productDescription } from './resources/product';
+import { stateDescription } from './resources/state';
+import { stopDeskDescription } from './resources/stopDesk';
+import { teamUserDescription } from './resources/teamUser';
 
 export class Dukan implements INodeType {
 	description: INodeTypeDescription = {
@@ -19,7 +23,7 @@ export class Dukan implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'dukanApi', required: true }],
 		requestDefaults: {
-			baseURL: '={{$credentials.baseUrl}}/v1',
+			baseURL: '={{$credentials.baseUrl}}/v1/external',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
@@ -32,6 +36,7 @@ export class Dukan implements INodeType {
 				name: 'resource',
 				type: 'options',
 				noDataExpression: true,
+				// eslint-disable-next-line n8n-nodes-base/node-param-options-type-unsorted-items
 				options: [
 					{
 						name: 'Order',
@@ -45,10 +50,26 @@ export class Dukan implements INodeType {
 						name: 'Team User',
 						value: 'teamUser',
 					},
+					{
+						name: 'State',
+						value: 'state',
+					},
+					{
+						name: 'Stop Desk',
+						value: 'stopDesk',
+					},
+					{
+						name: 'City Or Municipality',
+						value: 'city',
+					},
 				],
 				default: 'order',
 			},
+			...cityDescription,
 			...orderDescription,
+			...productDescription,
+			...stateDescription,
+			...stopDeskDescription,
 			...teamUserDescription,
 		],
 	};

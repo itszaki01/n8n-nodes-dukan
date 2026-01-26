@@ -1,7 +1,8 @@
 import type { INodeProperties } from 'n8n-workflow';
 import { teamUserCreateDescription } from './create';
-import { teamUserGetDescription } from './get';
 import { teamUserUpdateDescription } from './update';
+import { teamUserGetManyDescription } from './getMany';
+import { teamUserGetOneDescription } from './getOne';
 
 const showOnlyForTeamUsers = {
 	resource: ['teamUser'],
@@ -19,13 +20,22 @@ export const teamUserDescription: INodeProperties[] = [
 		options: [
 			{
 				name: 'Get Many',
-				value: 'getAll',
+				value: 'getMany',
 				action: 'Get team users',
 				description: 'Get many teamUsers',
 				routing: {
 					request: {
 						method: 'GET',
-						url: '/user-store',
+						url: '/user-store-api',
+						qs: {
+							page: '={{$parameter.page}}',
+							limit: '={{$parameter.limit}}',
+							filter: '={{$parameter.filter}}',
+							select: '={{$parameter.select}}',
+							sort: '={{$parameter.sort}}',
+							populate: '={{$parameter.populate}}',
+							offset: '={{$parameter.offset}}',
+						},
 					},
 				},
 			},
@@ -37,22 +47,22 @@ export const teamUserDescription: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '={{"/user-store/" + $parameter.teamUserId}}',
+						url: '={{"/user-store-api/" + $parameter.teamUserId}}',
 					},
 				},
 			},
-			{
-				name: 'Create',
-				value: 'create',
-				action: 'Create a new team user',
-				description: 'Create a new teamUser',
-				routing: {
-					request: {
-						method: 'POST',
-						url: '/user-store',
-					},
-				},
-			},
+			// {
+			// 	name: 'Create',
+			// 	value: 'create',
+			// 	action: 'Create a new team user',
+			// 	description: 'Create a new teamUser',
+			// 	routing: {
+			// 		request: {
+			// 			method: 'POST',
+			// 			url: '/user-store-api',
+			// 		},
+			// 	},
+			// },
 			//Update Team User
 			{
 				name: 'Update',
@@ -61,15 +71,16 @@ export const teamUserDescription: INodeProperties[] = [
 				description: 'Update a team user',
 				routing: {
 					request: {
-						method: 'PUT',
-						url: '={{"/user-store/" + $parameter.teamUserId}}',
+						method: 'PATCH',
+						url: '={{"/user-store-api/" + $parameter.teamUserId}}',
 					},
 				},
 			},
 		],
-		default: 'getAll',
+		default: 'getMany',
 	},
-	...teamUserGetDescription,
+	...teamUserGetManyDescription,
+	...teamUserGetOneDescription,
 	...teamUserCreateDescription,
 	...teamUserUpdateDescription,
 ];

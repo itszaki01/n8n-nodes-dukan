@@ -1,16 +1,16 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-const showOnlyForTeamUserGet = {
+const showOnlyForTeamUserGetOne = {
 	operation: ['getOneTeamUser'],
 	resource: ['teamUser'],
 };
 
-export const teamUserGetDescription: INodeProperties[] = [
+export const teamUserGetOneDescription: INodeProperties[] = [
 	{
 		displayName: 'Team User ID',
 		name: 'teamUserId',
 		type: 'string',
-		displayOptions: { show: showOnlyForTeamUserGet },
+		displayOptions: { show: showOnlyForTeamUserGetOne },
 		default: '',
 		description: "The Team User's ID to retrieve",
 	},

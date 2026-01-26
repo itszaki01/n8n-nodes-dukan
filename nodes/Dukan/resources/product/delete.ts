@@ -1,11 +1,11 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-const showOnlyForProductGetOne = {
-	operation: ['getOne'],
+const showOnlyForProductDelete = {
+	operation: ['delete'],
 	resource: ['product'],
 };
 
-export const productGetDescription: INodeProperties[] = [
+export const productDeleteDescription: INodeProperties[] = [
 	{
 		displayName: 'Product ID',
 		name: 'productId',
@@ -13,8 +13,8 @@ export const productGetDescription: INodeProperties[] = [
 		default: '',
 		required: true,
 		displayOptions: {
-			show: showOnlyForProductGetOne,
+			show: showOnlyForProductDelete,
 		},
-		description: "The product's MongoDB ObjectId to retrieve",
+		description: "The product's MongoDB ObjectId to delete",
 	},
 ];

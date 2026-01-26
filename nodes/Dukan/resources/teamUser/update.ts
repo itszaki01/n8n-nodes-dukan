@@ -25,20 +25,6 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 			show: showOnlyForTeamUserUpdate,
 		},
 		options: [
-		
-			{
-				displayName: 'Allow Custom Confirmation Service Calcs',
-				name: 'allowCustomConfirmationServiceCalcs',
-				type: 'boolean',
-				default: false,
-				description: 'Whether to allow custom confirmation service calculations',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'allowCustomConfirmationServiceCalcs',
-					},
-				},
-			},
 			{
 				displayName: 'Allow Receiving New Orders',
 				name: 'allowRecivingNewOrders',
@@ -53,33 +39,6 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Confirmation Service Calcs Type',
-				name: 'confirmationServiceCalcsType',
-				type: 'options',
-				options: [
-					{
-						name: 'Order Confirmed',
-						value: 'OrderConfirmed',
-					},
-					{
-						name: 'Order Shipped',
-						value: 'OrderShipped',
-					},
-					{
-						name: 'Monthly Salary',
-						value: 'MonthlySalary',
-					},
-				],
-				default: 'OrderConfirmed',
-				description: 'Type of confirmation service calculation',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'confirmationServiceCalcsType',
-					},
-				},
-			},
-			{
 				displayName: 'Email',
 				name: 'email',
 				type: 'string',
@@ -90,10 +49,10 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'email',
+						value: '={{$parameter.email !== "" ? $parameter.email : undefined}}',
 					},
 				},
 			},
-
 			{
 				displayName: 'First Name',
 				name: 'userFirstName',
@@ -104,19 +63,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'userFirstName',
-					},
-				},
-			},
-			{
-				displayName: 'Is Active',
-				name: 'isActive',
-				type: 'boolean',
-				default: true,
-				description: 'Whether the user is active',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'isActive',
+						value: '={{$parameter.userFirstName !== "" ? $parameter.userFirstName : undefined}}',
 					},
 				},
 			},
@@ -130,6 +77,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'userLastName',
+						value: '={{$parameter.userLastName !== "" ? $parameter.userLastName : undefined}}',
 					},
 				},
 			},
@@ -143,6 +91,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'userPhoneNumber',
+						value: '={{$parameter.userPhoneNumber !== "" ? $parameter.userPhoneNumber : undefined}}',
 					},
 				},
 			},
@@ -156,6 +105,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'profileImage',
+						value: '={{$parameter.profileImage !== "" ? $parameter.profileImage : undefined}}',
 					},
 				},
 			},
@@ -187,19 +137,6 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'role',
-					},
-				},
-			},
-			{
-				displayName: 'Shipped Order Confirmation Member Fee',
-				name: 'shippedOrderConfirmationMemberFee',
-				type: 'number',
-				default: 0,
-				description: 'Fee for shipped order confirmation member',
-				routing: {
-					send: {
-						type: 'body',
-						property: 'shippedOrderConfirmationMemberFee',
 					},
 				},
 			},

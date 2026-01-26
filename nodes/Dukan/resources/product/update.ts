@@ -1,18 +1,29 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-const showOnlyForProductCreate = {
-	operation: ['create'],
+const showOnlyForProductUpdate = {
+	operation: ['update'],
 	resource: ['product'],
 };
 
-export const productCreateDescription: INodeProperties[] = [
+export const productUpdateDescription: INodeProperties[] = [
+	{
+		displayName: 'Product ID',
+		name: 'productId',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: showOnlyForProductUpdate,
+		},
+		description: "The product's MongoDB ObjectId to update",
+	},
 	{
 		displayName: 'Use JSON',
 		name: 'useJson',
 		type: 'boolean',
 		default: false,
 		displayOptions: {
-			show: showOnlyForProductCreate,
+			show: showOnlyForProductUpdate,
 		},
 		description: 'Whether to use JSON to define the product data',
 	},
@@ -23,16 +34,16 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '{}',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [true],
 			},
 		},
-		description: 'JSON object containing product data. See ProductDto.ts for complete structure. Required fields: name, productShortName, price, productSku, slug, imageCover, images (array), showProduct, isLimitedQtty. All other fields from CreateStoreProductDto are optional.',
+		description: 'JSON object containing product update data. See ProductDto.ts for complete structure. All fields from UpdateStoreProductDto (which extends PartialType(CreateStoreProductDto)) are optional.',
 		routing: {
 			send: {
 				type: 'body',
 				property: '=',
-				value: '={{Object.fromEntries(Object.entries(JSON.parse($parameter.json)).filter(([_, v]) => v !== ""))}}',
+				value: '={{Object.fromEntries(Object.entries(JSON.parse($parameter.json)).filter(([_, v]) => { if (v === "") return false; if (Array.isArray(v) && v.length === 0) return false; if (typeof v === "object" && v !== null && !Array.isArray(v) && Object.keys(v).length === 0) return false; return true; }))}}',
 			},
 		},
 	},
@@ -41,18 +52,18 @@ export const productCreateDescription: INodeProperties[] = [
 		name: 'name',
 		type: 'string',
 		default: '',
-		required: true,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
-		description: 'Product name (required, max 200 characters)',
+		description: 'Product name (optional, max 200 characters)',
 		routing: {
 			send: {
 				type: 'body',
 				property: 'name',
+				value: '={{$parameter.name !== "" ? $parameter.name : undefined}}',
 			},
 		},
 	},
@@ -61,18 +72,18 @@ export const productCreateDescription: INodeProperties[] = [
 		name: 'productShortName',
 		type: 'string',
 		default: '',
-		required: true,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
-		description: 'Short name for the product (required, max 20 characters)',
+		description: 'Short name for the product (optional, max 20 characters)',
 		routing: {
 			send: {
 				type: 'body',
 				property: 'productShortName',
+				value: '={{$parameter.productShortName !== "" ? $parameter.productShortName : undefined}}',
 			},
 		},
 	},
@@ -81,21 +92,21 @@ export const productCreateDescription: INodeProperties[] = [
 		name: 'price',
 		type: 'number',
 		default: 0,
-		required: true,
 		typeOptions: {
 			minValue: 1,
 		},
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
-		description: 'Product price (required, minimum 1)',
+		description: 'Product price (optional, minimum 1)',
 		routing: {
 			send: {
 				type: 'body',
 				property: 'price',
+				value: '={{$parameter.price !== undefined && $parameter.price > 0 ? $parameter.price : undefined}}',
 			},
 		},
 	},
@@ -109,7 +120,7 @@ export const productCreateDescription: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -132,7 +143,7 @@ export const productCreateDescription: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -150,18 +161,18 @@ export const productCreateDescription: INodeProperties[] = [
 		name: 'productSku',
 		type: 'string',
 		default: '',
-		required: true,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
-		description: 'Product SKU (required, uppercase)',
+		description: 'Product SKU (optional, uppercase)',
 		routing: {
 			send: {
 				type: 'body',
 				property: 'productSku',
+				value: '={{$parameter.productSku !== "" ? $parameter.productSku : undefined}}',
 			},
 		},
 	},
@@ -170,18 +181,18 @@ export const productCreateDescription: INodeProperties[] = [
 		name: 'slug',
 		type: 'string',
 		default: '',
-		required: true,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
-		description: 'Product slug/URL identifier (required)',
+		description: 'Product slug/URL identifier (optional)',
 		routing: {
 			send: {
 				type: 'body',
 				property: 'slug',
+				value: '={{$parameter.slug !== "" ? $parameter.slug : undefined}}',
 			},
 		},
 	},
@@ -195,7 +206,7 @@ export const productCreateDescription: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -208,7 +219,6 @@ export const productCreateDescription: INodeProperties[] = [
 			},
 		},
 	},
-
 	{
 		displayName: 'Category',
 		name: 'category',
@@ -216,7 +226,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -234,18 +244,18 @@ export const productCreateDescription: INodeProperties[] = [
 		name: 'imageCover',
 		type: 'string',
 		default: '',
-		required: true,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
-		description: 'Cover image URL (required)',
+		description: 'Cover image URL (optional)',
 		routing: {
 			send: {
 				type: 'body',
 				property: 'imageCover',
+				value: '={{$parameter.imageCover !== "" ? $parameter.imageCover : undefined}}',
 			},
 		},
 	},
@@ -254,10 +264,9 @@ export const productCreateDescription: INodeProperties[] = [
 		name: 'images',
 		type: 'json',
 		default: '[]',
-		required: true,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -267,7 +276,7 @@ export const productCreateDescription: INodeProperties[] = [
 			send: {
 				type: 'body',
 				property: 'images',
-				value: '={{JSON.parse($parameter.images)}}',
+				value: '={{(() => { const parsed = JSON.parse($parameter.images); return (Array.isArray(parsed) && parsed.length === 0) ? undefined : parsed; })()}}',
 			},
 		},
 	},
@@ -278,7 +287,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -295,15 +304,14 @@ export const productCreateDescription: INodeProperties[] = [
 		displayName: 'Show Product',
 		name: 'showProduct',
 		type: 'boolean',
-		default: true,
-		required: true,
+		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
-		description: 'Whether to show the product (required)',
+		description: 'Whether to show the product (optional)',
 		routing: {
 			send: {
 				type: 'body',
@@ -316,15 +324,13 @@ export const productCreateDescription: INodeProperties[] = [
 		name: 'isLimitedQtty',
 		type: 'boolean',
 		default: false,
-		required: true,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
-
 			},
 		},
-		description: 'Whether the product has limited quantity (required)',
+		description: 'Whether the product has limited quantity (optional)',
 		routing: {
 			send: {
 				type: 'body',
@@ -342,7 +348,7 @@ export const productCreateDescription: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 				isLimitedQtty: [true],
 			},
@@ -363,7 +369,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -382,7 +388,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -394,27 +400,6 @@ export const productCreateDescription: INodeProperties[] = [
 			},
 		},
 	},
-	
-	// {
-	// 	displayName: 'Sub Category',
-	// 	name: 'categorySub',
-	// 	type: 'string',
-	// 	default: '',
-	// 	displayOptions: {
-	// 		show: {
-	// 			...showOnlyForProductCreate,
-	// 			useJson: [false],
-	// 		},
-	// 	},
-	// 	description: 'Product sub category (optional)',
-	// 	routing: {
-	// 		send: {
-	// 			type: 'body',
-	// 			property: 'categorySub',
-	// 			value: '={{$parameter.categorySub !== "" ? $parameter.categorySub : undefined}}',
-	// 		},
-	// 	},
-	// },
 	{
 		displayName: 'Colors',
 		name: 'colors',
@@ -422,7 +407,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '{}',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -432,7 +417,7 @@ export const productCreateDescription: INodeProperties[] = [
 			send: {
 				type: 'body',
 				property: 'colors',
-				value: '={{JSON.parse($parameter.colors)}}',
+				value: '={{(() => { const parsed = JSON.parse($parameter.colors); return (typeof parsed === "object" && parsed !== null && !Array.isArray(parsed) && Object.keys(parsed).length === 0) || (Array.isArray(parsed) && parsed.length === 0) ? undefined : parsed; })()}}',
 			},
 		},
 	},
@@ -443,7 +428,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '[]',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -453,7 +438,7 @@ export const productCreateDescription: INodeProperties[] = [
 			send: {
 				type: 'body',
 				property: 'otherProperties',
-				value: '={{JSON.parse($parameter.otherProperties)}}',
+				value: '={{(() => { const parsed = JSON.parse($parameter.otherProperties); return (Array.isArray(parsed) && parsed.length === 0) ? undefined : parsed; })()}}',
 			},
 		},
 	},
@@ -464,7 +449,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '[]',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -473,7 +458,7 @@ export const productCreateDescription: INodeProperties[] = [
 			send: {
 				type: 'body',
 				property: 'offers',
-				value: '={{JSON.parse($parameter.offers)}}',
+				value: '={{(() => { const parsed = JSON.parse($parameter.offers); return (Array.isArray(parsed) && parsed.length === 0) ? undefined : parsed; })()}}',
 			},
 		},
 	},
@@ -484,7 +469,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '[]',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -493,7 +478,7 @@ export const productCreateDescription: INodeProperties[] = [
 			send: {
 				type: 'body',
 				property: 'reviews',
-				value: '={{JSON.parse($parameter.reviews)}}',
+				value: '={{(() => { const parsed = JSON.parse($parameter.reviews); return (Array.isArray(parsed) && parsed.length === 0) ? undefined : parsed; })()}}',
 			},
 		},
 	},
@@ -504,7 +489,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '[]',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -513,7 +498,7 @@ export const productCreateDescription: INodeProperties[] = [
 			send: {
 				type: 'body',
 				property: 'seoKeywords',
-				value: '={{JSON.parse($parameter.seoKeywords)}}',
+				value: '={{(() => { const parsed = JSON.parse($parameter.seoKeywords); return (Array.isArray(parsed) && parsed.length === 0) ? undefined : parsed; })()}}',
 			},
 		},
 	},
@@ -524,7 +509,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -544,7 +529,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -564,7 +549,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -584,7 +569,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -604,7 +589,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 				allowSpecialGoogleSheet: [true],
 			},
@@ -625,7 +610,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -644,7 +629,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -663,7 +648,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -682,7 +667,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -702,7 +687,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -743,7 +728,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: 'nothing',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -763,7 +748,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -782,9 +767,10 @@ export const productCreateDescription: INodeProperties[] = [
 		default: '',
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 				allowCustomThankYouPage: [true],
+
 			},
 		},
 		description: 'Custom thank you page HTML content (optional)',
@@ -803,7 +789,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -825,7 +811,7 @@ export const productCreateDescription: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 				allowCustomShippingToHomePrice: [true],
 			},
@@ -846,7 +832,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},
@@ -868,7 +854,7 @@ export const productCreateDescription: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 				allowCustomShppingToStopDeskPrice: [true],
 			},
@@ -889,7 +875,7 @@ export const productCreateDescription: INodeProperties[] = [
 		default: false,
 		displayOptions: {
 			show: {
-				...showOnlyForProductCreate,
+				...showOnlyForProductUpdate,
 				useJson: [false],
 			},
 		},

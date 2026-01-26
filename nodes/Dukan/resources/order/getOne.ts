@@ -7,12 +7,12 @@ const showOnlyForUserGetOne = {
 
 export const orderGetOneDescription: INodeProperties[] = [
 	{
-		displayName: 'Order UID',
-		name: 'orderUid',
+		displayName: 'Cart UID',
+		name: 'cartUid',
 		type: 'string',
 		displayOptions: { show: showOnlyForUserGetOne },
 		default: '',
 		required:true,
-		description: "The order's UID to retrieve",
+		description: "The cart's UID to retrieve",
 	},
 ];

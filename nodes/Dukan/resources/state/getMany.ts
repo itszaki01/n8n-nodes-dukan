@@ -1,16 +1,16 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-const showOnlyForUserGetMany = {
+const showOnlyForStateGetMany = {
 	operation: ['getMany'],
-	resource: ['order'],
+	resource: ['state'],
 };
 
-export const orderGetManyDescription: INodeProperties[] = [
+export const stateGetManyDescription: INodeProperties[] = [
 	{
 		displayName: 'Page Number',
 		name: 'page',
 		type: 'number',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStateGetMany },
 		typeOptions: {
 			minValue: 1,
 		},
@@ -24,7 +24,7 @@ export const orderGetManyDescription: INodeProperties[] = [
 		typeOptions: {
 			minValue: 1,
 		},
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStateGetMany },
 		default: 50,
 		description: 'Max number of results to return',
 	},
@@ -34,7 +34,7 @@ export const orderGetManyDescription: INodeProperties[] = [
 		displayName: 'Sort',
 		name: 'sort',
 		type: 'string',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStateGetMany },
 		default: `-createdAt`,
 		description: 'Sort Docs by Fields',
 		hint: 'Single field or space separated fields example: "name -createdAt"',
@@ -44,7 +44,7 @@ export const orderGetManyDescription: INodeProperties[] = [
 		displayName: 'Populate Fields',
 		name: 'populate',
 		type: 'string',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStateGetMany },
 		default: ``,
 		description: 'Populate Fields to return',
 		hint: 'Space separated fields example: "name state.name"',
@@ -54,7 +54,7 @@ export const orderGetManyDescription: INodeProperties[] = [
 		displayName: 'Select Fields',
 		name: 'select',
 		type: 'string',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStateGetMany },
 		default: ``,
 		description: 'Select Fields to return',
 		hint: 'Space separated fields example: "name state"',
@@ -64,7 +64,7 @@ export const orderGetManyDescription: INodeProperties[] = [
 		displayName: 'Offset',
 		name: 'offset',
 		type: 'number',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStateGetMany },
 		default: 0,
 		description: 'Offset to skip',
 	},
@@ -73,7 +73,7 @@ export const orderGetManyDescription: INodeProperties[] = [
 		hint: 'Mongodb Query Object: <a href="https://www.mongodb.com/docs/manual/tutorial/query-documents/" target="_blank">https://www.mongodb.com/docs/manual/tutorial/query-documents/</a>',
 		name: 'filter',
 		type: 'json',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStateGetMany },
 		default: `{
 	"$or":[],
 	"$and":[]
