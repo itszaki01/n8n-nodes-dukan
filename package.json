@@ -5,7 +5,13 @@
   "license": "MIT",
   "homepage": "",
   "keywords": [
-    "n8n-community-node-package"
+    "n8n-community-node-package",
+    "n8n-nodes-dukan",
+    "mydukan.shop",
+    "dukan",
+    "dukan shop",
+    "dukan n8n"
+
   ],
   "author": {
     "name": "Zakaria Touil",
