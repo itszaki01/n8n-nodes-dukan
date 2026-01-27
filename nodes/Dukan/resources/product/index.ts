@@ -21,7 +21,7 @@ export const productDescription: INodeProperties[] = [
 		displayOptions: {
 			show: showOnlyForProducts,
 		},
-		// eslint-disable-next-line n8n-nodes-base/node-param-options-type-unsorted-items
+		// eslint-disable-next-line n8n-nodes-base/node-param-options-type-unsorted-items 
 		options: [
 			{
 				name: 'Get Many Products',
@@ -35,6 +35,7 @@ export const productDescription: INodeProperties[] = [
 						qs: {
 							page: '={{$parameter.page}}',
 							limit: '={{$parameter.limit}}',
+							//Parse the filter as a json string
 							filter: '={{$parameter.filter}}',
 							select: '={{$parameter.select}}',
 							sort: '={{$parameter.sort}}',

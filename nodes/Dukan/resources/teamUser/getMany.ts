@@ -70,14 +70,14 @@ export const teamUserGetManyDescription: INodeProperties[] = [
 	},
 	{
 		displayName: 'Filter',
-		hint: 'Mongodb Query Object: <a href="https://www.mongodb.com/docs/manual/tutorial/query-documents/" target="_blank">https://www.mongodb.com/docs/manual/tutorial/query-documents/</a>',
+		hint: 'A JSON String of a filter object with Mongo Db Query Operations: <a href="https://www.mongodb.com/docs/manual/tutorial/query-documents/" target="_blank">https://www.mongodb.com/docs/manual/tutorial/query-documents/</a>',
 		name: 'filter',
-		type: 'json',
+		type: 'string',
 		displayOptions: { show: showOnlyForUserGetMany },
 		default: `{
 	"$or":[],
 	"$and":[]
 }`,
-		description: 'Filter Docs with Mongo Db Query Operations',
+		description: 'A JSON String of a filter object with Mongo Db Query Operations: <a href="https://www.mongodb.com/docs/manual/tutorial/query-documents/" target="_blank">https://www.mongodb.com/docs/manual/tutorial/query-documents/</a>',
 	},
 ];
