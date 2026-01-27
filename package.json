@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-dukan",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "This Node made to make life easier with mydukan.shop",
   "license": "MIT",
   "homepage": "",
@@ -11,7 +11,6 @@
     "dukan",
     "dukan shop",
     "dukan n8n"
-
   ],
   "author": {
     "name": "Zakaria Touil",
