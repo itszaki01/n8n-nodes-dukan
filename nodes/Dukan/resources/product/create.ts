@@ -58,7 +58,7 @@ export const productCreateDescription: INodeProperties[] = [
 	},
 	{
 		displayName: 'Name',
-		name: 'name',
+		name: 'productName',
 		type: 'string',
 		default: '',
 		required: true,
@@ -68,11 +68,12 @@ export const productCreateDescription: INodeProperties[] = [
 				useJson: [false],
 			},
 		},
-		description: 'Product name (required, max 200 characters)',
+		description: 'Product Name (required, max 200 characters)',
 		routing: {
 			send: {
 				type: 'body',
 				property: 'name',
+				value: '={{$parameter.productName !== undefined ? $parameter.productName : undefined}}',
 			},
 		},
 	},
@@ -287,7 +288,7 @@ export const productCreateDescription: INodeProperties[] = [
 			send: {
 				type: 'body',
 				property: 'images',
-				value: '{{JSON.parse($parameter.images)}}',
+				value: '={{JSON.parse($parameter.images)}}',
 			},
 		},
 	},
