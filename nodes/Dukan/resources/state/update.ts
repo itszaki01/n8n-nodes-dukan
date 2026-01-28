@@ -1,4 +1,4 @@
-import type { INodeProperties } from 'n8n-workflow';
+import type { IExecuteSingleFunctions, IHttpRequestOptions, INodeProperties } from 'n8n-workflow';
 
 const showOnlyForStateUpdate = {
 	operation: ['update'],
@@ -30,7 +30,7 @@ export const stateUpdateDescription: INodeProperties[] = [
 	{
 		displayName: 'JSON',
 		name: 'json',
-		type: 'json',
+		type: 'string',
 		default: '{}',
 		displayOptions: {
 			show: {
@@ -43,7 +43,27 @@ export const stateUpdateDescription: INodeProperties[] = [
 			send: {
 				type: 'body',
 				property: '=',
-				value: '={{Object.fromEntries(Object.entries(JSON.parse($parameter.json)).filter(([_, v]) => { if (v === "") return false; if (Array.isArray(v) && v.length === 0) return false; if (typeof v === "object" && v !== null && !Array.isArray(v) && Object.keys(v).length === 0) return false; return true; }))}}',
+				value: '={{JSON.parse($parameter.json)}}',
+				preSend: [
+					async function (this: IExecuteSingleFunctions, requestOptions: IHttpRequestOptions): Promise<IHttpRequestOptions> {
+						const jsonString = this.getNodeParameter('json', '{}') as string;
+						try {
+							const parsedBody = JSON.parse(jsonString);
+
+							// Optional: Clean empty strings from top-level
+							const cleanedBody = Object.fromEntries(
+								// eslint-disable-next-line @typescript-eslint/no-unused-vars
+								Object.entries(parsedBody).filter(([_, v]) => v !== "")
+							);
+
+							requestOptions.body = cleanedBody;
+							// eslint-disable-next-line @typescript-eslint/no-unused-vars
+						} catch (error) {
+							throw new Error('Invalid JSON provided in the JSON field');
+						}
+						return requestOptions;
+					},
+				],
 			},
 		},
 	},
