@@ -1,16 +1,25 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-const showOnlyForUserGetMany = {
-	operation: ['getMany'],
-	resource: ['teamUser'],
+const showOnlyForStopDeskGetManyByLocation = {
+	operation: ['getManyByLocation'],
+	resource: ['stopDesk'],
 };
 
-export const teamUserGetManyDescription: INodeProperties[] = [
+export const stopDeskGetManyByLocationIdDescription: INodeProperties[] = [
+	{
+		displayName: 'Location ID',
+		name: 'locationId',
+		type: 'string',
+		default: '',
+		displayOptions: { show: showOnlyForStopDeskGetManyByLocation },
+		required: true,
+		description: 'The ID of the location to get the stop desks for',
+	},
 	{
 		displayName: 'Page Number',
 		name: 'page',
 		type: 'number',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStopDeskGetManyByLocation },
 		typeOptions: {
 			minValue: 1,
 		},
@@ -24,17 +33,15 @@ export const teamUserGetManyDescription: INodeProperties[] = [
 		typeOptions: {
 			minValue: 1,
 		},
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStopDeskGetManyByLocation },
 		default: 50,
 		description: 'Max number of results to return',
 	},
-
-
 	{
 		displayName: 'Sort',
 		name: 'sort',
 		type: 'string',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStopDeskGetManyByLocation },
 		default: `-createdAt`,
 		description: 'Sort Docs by Fields',
 		hint: 'Single field or space separated fields example: "name -createdAt"',
@@ -44,7 +51,7 @@ export const teamUserGetManyDescription: INodeProperties[] = [
 		displayName: 'Populate Fields',
 		name: 'populate',
 		type: 'string',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStopDeskGetManyByLocation },
 		default: ``,
 		description: 'Populate Fields to return',
 		hint: 'Space separated fields example: "name state.name"',
@@ -54,7 +61,7 @@ export const teamUserGetManyDescription: INodeProperties[] = [
 		displayName: 'Select Fields',
 		name: 'select',
 		type: 'string',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStopDeskGetManyByLocation },
 		default: ``,
 		description: 'Select Fields to return',
 		hint: 'Space separated fields example: "name state"',
@@ -64,7 +71,7 @@ export const teamUserGetManyDescription: INodeProperties[] = [
 		displayName: 'Offset',
 		name: 'offset',
 		type: 'number',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStopDeskGetManyByLocation },
 		default: 0,
 		description: 'Offset to skip',
 	},
@@ -73,7 +80,7 @@ export const teamUserGetManyDescription: INodeProperties[] = [
 		hint: 'A JSON String of a filter object with Mongo Db Query Operations: <a href="https://www.mongodb.com/docs/manual/tutorial/query-documents/" target="_blank">https://www.mongodb.com/docs/manual/tutorial/query-documents/</a>',
 		name: 'filter',
 		type: 'string',
-		displayOptions: { show: showOnlyForUserGetMany },
+		displayOptions: { show: showOnlyForStopDeskGetManyByLocation },
 		default: `{}`,
 		description: 'A JSON String of a filter object with Mongo Db Query Operations: <a href="https://www.mongodb.com/docs/manual/tutorial/query-documents/" target="_blank">https://www.mongodb.com/docs/manual/tutorial/query-documents/</a>',
 	},

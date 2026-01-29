@@ -4,6 +4,7 @@ import { cityDeleteDescription } from './delete';
 import { cityGetManyDescription } from './getMany';
 import { cityUpdateDescription } from './update';
 import { cityCreateDescription } from './create';
+import { cityGetManyByLocationIdDescription } from './getManyByLocationId';
 
 const showOnlyForCities = {
 	resource: ['city'],
@@ -36,6 +37,28 @@ export const cityDescription: INodeProperties[] = [
 							select: '={{$parameter.select}}',
 							sort: '={{$parameter.sort}}',
 							populate: '={{$parameter.populate}}',
+							offset: '={{$parameter.offset}}',
+						},
+					},
+				},
+			},
+			{
+				name: 'Get Many Cities by Location',
+				value: 'getManyByLocation',
+				action: 'Get many cities by location',
+				description: 'Get many cities by location with pagination',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '={{"/store-location-sub-api/location-sub-locations/" + $parameter.locationId}}',
+						qs: {
+							page: '={{$parameter.page}}',
+							limit: '={{$parameter.limit}}',
+							filter: '={{$parameter.filter}}',
+							select: '={{$parameter.select}}',
+							sort: '={{$parameter.sort}}',
+							populate: '={{$parameter.populate}}',
+							offset: '={{$parameter.offset}}',
 						},
 					},
 				},
@@ -92,6 +115,7 @@ export const cityDescription: INodeProperties[] = [
 		default: 'getMany',
 	},
 	...cityGetManyDescription,
+	...cityGetManyByLocationIdDescription,
 	...cityGetDescription,
 	...cityCreateDescription,
 	...cityUpdateDescription,

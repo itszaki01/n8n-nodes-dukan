@@ -74,10 +74,7 @@ export const cityGetManyDescription: INodeProperties[] = [
 		name: 'filter',
 		type: 'string',
 		displayOptions: { show: showOnlyForCityGetMany },
-		default: `{
-	"$or":[],
-	"$and":[]
-}`,
+		default: `{}`,
 		description: 'A JSON String of a filter object with Mongo Db Query Operations: <a href="https://www.mongodb.com/docs/manual/tutorial/query-documents/" target="_blank">https://www.mongodb.com/docs/manual/tutorial/query-documents/</a>',
 	},
 ];

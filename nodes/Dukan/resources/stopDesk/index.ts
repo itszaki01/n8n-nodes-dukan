@@ -4,6 +4,7 @@ import { stopDeskDeleteDescription } from './delete';
 import { stopDeskGetManyDescription } from './getMany';
 import { stopDeskUpdateDescription } from './update';
 import { stopDeskCreateDescription } from './create';
+import { stopDeskGetManyByLocationIdDescription } from './getManyByLocationId';
 
 const showOnlyForStopDesks = {
 	resource: ['stopDesk'],
@@ -29,6 +30,27 @@ export const stopDeskDescription: INodeProperties[] = [
 					request: {
 						method: 'GET',
 						url: '/store-location-stopdesk-api',
+						qs: {
+							page: '={{$parameter.page}}',
+							limit: '={{$parameter.limit}}',
+							filter: '={{$parameter.filter}}',
+							select: '={{$parameter.select}}',
+							sort: '={{$parameter.sort}}',
+							populate: '={{$parameter.populate}}',
+							offset: '={{$parameter.offset}}',
+						},
+					},
+				},
+			},
+			{
+				name: 'Get Many Stop Desks by Location',
+				value: 'getManyByLocation',
+				action: 'Get many stop desks by location',
+				description: 'Get many stop desks by location with pagination',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '={{"/store-location-stopdesk-api/location-stop-desks/" + $parameter.locationId}}',
 						qs: {
 							page: '={{$parameter.page}}',
 							limit: '={{$parameter.limit}}',
@@ -93,6 +115,7 @@ export const stopDeskDescription: INodeProperties[] = [
 		default: 'getMany',
 	},
 	...stopDeskGetManyDescription,
+	...stopDeskGetManyByLocationIdDescription,
 	...stopDeskGetDescription,
 	...stopDeskCreateDescription,
 	...stopDeskUpdateDescription,
