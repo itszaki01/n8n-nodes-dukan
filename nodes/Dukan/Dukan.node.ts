@@ -1,9 +1,12 @@
 import { NodeConnectionTypes, type INodeType, type INodeTypeDescription } from 'n8n-workflow';
 import { cityDescription } from './resources/city';
+import { deliveryCompaniesApiDescription } from './resources/deliveryCompaniesApi';
 import { orderDescription } from './resources/order';
 import { productDescription } from './resources/product';
 import { stateDescription } from './resources/state';
 import { stopDeskDescription } from './resources/stopDesk';
+import { storeDescription } from './resources/store';
+import { storeShippingAccountsDescription } from './resources/storeShippingAccounts';
 import { teamUserDescription } from './resources/teamUser';
 
 export class Dukan implements INodeType {
@@ -47,8 +50,20 @@ export class Dukan implements INodeType {
 						value: 'product',
 					},
 					{
+						name: 'Store Shipping Accounts',
+						value: 'storeShippingAccounts',
+					},
+					{
+						name: 'Delivery Companies API',
+						value: 'deliveryCompaniesApi',
+					},
+					{
 						name: 'Team User',
 						value: 'teamUser',
+					},
+					{
+						name: 'Store',
+						value: 'store',
 					},
 					{
 						name: 'State',
@@ -66,10 +81,13 @@ export class Dukan implements INodeType {
 				default: 'order',
 			},
 			...cityDescription,
+			...deliveryCompaniesApiDescription,
 			...orderDescription,
 			...productDescription,
 			...stateDescription,
 			...stopDeskDescription,
+			...storeDescription,
+			...storeShippingAccountsDescription,
 			...teamUserDescription,
 		],
 	};

@@ -108,6 +108,9 @@ export const cityDescription: INodeProperties[] = [
 					request: {
 						method: 'DELETE',
 						url: '={{"/store-location-sub-api/" + $parameter.cityId}}',
+						headers: {
+							'Content-Type': 'text/plain',
+						},
 					},
 				},
 			},
