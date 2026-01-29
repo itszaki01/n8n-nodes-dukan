@@ -50,7 +50,7 @@ export class Dukan implements INodeType {
 						value: 'product',
 					},
 					{
-						name: 'Store Shipping Accounts',
+						name: 'Store Shipping Account',
 						value: 'storeShippingAccounts',
 					},
 					{
