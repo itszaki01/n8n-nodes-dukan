@@ -7,6 +7,9 @@ import { stateDescription } from './resources/state';
 import { stopDeskDescription } from './resources/stopDesk';
 import { storeDescription } from './resources/store';
 import { storeShippingAccountsDescription } from './resources/storeShippingAccounts';
+import { storeClientsDescription } from './resources/storeClients';
+import { storeCouponsDescription } from './resources/storeCoupons';
+import { storeStockDescription } from './resources/storeStock';
 import { teamUserDescription } from './resources/teamUser';
 
 export class Dukan implements INodeType {
@@ -77,6 +80,18 @@ export class Dukan implements INodeType {
 						name: 'City Or Municipality',
 						value: 'city',
 					},
+					{
+						name: 'Store Client',
+						value: 'storeClients',
+					},
+					{
+						name: 'Store Coupon',
+						value: 'storeCoupons',
+					},
+					{
+						name: 'Store Pro Stock',
+						value: 'storeStock',
+					},
 				],
 				default: 'order',
 			},
@@ -88,6 +103,9 @@ export class Dukan implements INodeType {
 			...stopDeskDescription,
 			...storeDescription,
 			...storeShippingAccountsDescription,
+			...storeClientsDescription,
+			...storeCouponsDescription,
+			...storeStockDescription,
 			...teamUserDescription,
 		],
 	};
