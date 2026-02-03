@@ -181,11 +181,12 @@ export const storeCouponsCreateDescription: INodeProperties[] = [
 			},
 		},
 	},
+	// eslint-disable-next-line n8n-nodes-base/node-param-type-options-missing-from-limit
 	{
 		displayName: 'Limit',
 		name: 'limit',
 		type: 'number',
-		default: 1,
+		default: 50,
 		required: true,
 		displayOptions: {
 			show: {
@@ -193,6 +194,7 @@ export const storeCouponsCreateDescription: INodeProperties[] = [
 				useJson: [false],
 			},
 		},
+		// eslint-disable-next-line n8n-nodes-base/node-param-description-wrong-for-limit
 		description: 'Usage limit (number of times the coupon can be used)',
 		routing: {
 			send: {
