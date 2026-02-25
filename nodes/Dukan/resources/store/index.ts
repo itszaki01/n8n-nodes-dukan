@@ -44,7 +44,7 @@ export const storeDescription: INodeProperties[] = [
 							select: '={{$parameter.select}}',
 							sort: '={{$parameter.sort}}',
 							populate: '={{$parameter.populate}}',
-							offset: '={{$parameter.offset}}',
+							offset: '={{ $parameter.offset === 0 ? undefined : $parameter.offset }}',
 						},
 					},
 				},
