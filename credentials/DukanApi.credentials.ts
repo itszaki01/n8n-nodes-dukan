@@ -183,6 +183,18 @@ export class DukanApi implements ICredentialType {
 		credentials: ICredentialDataDecryptedObject,
 		requestOptions: IHttpRequestOptions,
 	): Promise<IHttpRequestOptions> => {
+		// If a JWT header is already set (e.g. by the node itself),
+		// respect it and do not overwrite.
+		const headers = requestOptions.headers ?? {};
+		const existingJwtHeader =
+			(headers as Record<string, string>)['X-AFFLITA-JWT'] ??
+			(headers as Record<string, string>)['x-afflita-jwt'];
+
+		if (existingJwtHeader) {
+			requestOptions.headers = headers;
+			return requestOptions;
+		}
+
 		if (credentials.authMethod === 'apiKey') {
 			requestOptions.headers = {
 				...requestOptions.headers,

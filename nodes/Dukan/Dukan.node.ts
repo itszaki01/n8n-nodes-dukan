@@ -27,16 +27,42 @@ export class Dukan implements INodeType {
 		usableAsTool: true,
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
-		credentials: [{ name: 'dukanApi', required: true }],
+		credentials: [{ name: 'dukanApi', required: false }],
 		requestDefaults: {
 			baseURL: '={{$credentials.baseUrl}}/v1/external',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
-				'X-AFFLITA-JWT': '={{$credentials.apiKey}}',
+				// If forceCustomAuth is enabled, set header here.
+				// The credential's authenticate() will detect this header and not overwrite it.
+				'X-AFFLITA-JWT':
+					'={{ $parameter["forceCustomAuth"] ? $parameter["customApiKey"] : undefined }}',
 			},
 		},
 		properties: [
+			{
+				displayName: 'Force Custom Auth Header',
+				name: 'forceCustomAuth',
+				type: 'boolean',
+				default: false,
+				description:
+					'Whether to use a custom API key from this node instead of the configured Dukan credentials',
+			},
+			{
+				displayName: 'Custom API Key',
+				name: 'customApiKey',
+				type: 'string',
+				typeOptions: {
+					password: true,
+				},
+				default: '',
+				displayOptions: {
+					show: {
+						forceCustomAuth: [true],
+					},
+				},
+				description: 'API key to send when Force Custom Auth Header is enabled',
+			},
 			{
 				displayName: 'Resource',
 				name: 'resource',
