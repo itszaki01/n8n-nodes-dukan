@@ -29,7 +29,8 @@ export class Dukan implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'dukanApi', required: false }],
 		requestDefaults: {
-			baseURL: '={{$credentials.baseUrl}}/v1/external',
+			baseURL:
+				'={{ ($parameter["forceCustomBaseUrl"] && $parameter["customBaseUrl"]) ? $parameter["customBaseUrl"] : $credentials.baseUrl }}/v1/external',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
@@ -47,6 +48,28 @@ export class Dukan implements INodeType {
 				default: false,
 				description:
 					'Whether to use a custom API key from this node instead of the configured Dukan credentials',
+			},
+			{
+				displayName: 'Force Custom Base URL',
+				name: 'forceCustomBaseUrl',
+				type: 'boolean',
+				default: false,
+				description:
+					'Whether to use a custom Base URL from this node instead of the Base URL in the credentials',
+			},
+			{
+				displayName: 'Custom Base URL',
+				name: 'customBaseUrl',
+				type: 'string',
+				placeholder: 'https://store.company.com',
+				default: '',
+				displayOptions: {
+					show: {
+						forceCustomBaseUrl: [true],
+					},
+				},
+				description:
+					'Base URL to use for API requests instead of the Base URL from the credentials (without the /v1/external suffix)',
 			},
 			{
 				displayName: 'Custom API Key',
