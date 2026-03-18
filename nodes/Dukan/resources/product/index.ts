@@ -6,6 +6,7 @@ import { productGetProductsListDescription } from './getProductsList';
 import { productUpdateDescription } from './update';
 import { productCreateDescription } from './create';
 import { getOneBySkuDescription } from './getOneBySku';
+import { productImportSingleFromUrlDescription } from './importSingleFromUrl';
 
 
 const showOnlyForProducts = {
@@ -118,6 +119,18 @@ export const productDescription: INodeProperties[] = [
 					},
 				},
 			},
+			{
+				name: 'Import Single Product From URL',
+				value: 'importSingleFromUrl',
+				action: 'Import a product from url',
+				description: 'Import a single product from a URL',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '/store-product-api/import-single-from-url',
+					},
+				},
+			},
 		],
 		default: 'getMany',
 	},
@@ -128,4 +141,5 @@ export const productDescription: INodeProperties[] = [
 	...productCreateDescription,
 	...productUpdateDescription,
 	...productDeleteDescription,
+	...productImportSingleFromUrlDescription,
 ];
