@@ -1,11 +1,26 @@
 import type { INodeProperties } from 'n8n-workflow';
 
 const showOnlyForStateGetMany = {
-	operation: ['getMany'],
+	operation: ['getMany', 'getManyByStore'],
+	resource: ['state'],
+};
+
+const showOnlyForStateGetManyByStore = {
+	operation: ['getManyByStore'],
 	resource: ['state'],
 };
 
 export const stateGetManyDescription: INodeProperties[] = [
+	{
+		displayName: 'Store ID',
+		name: 'store',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: { show: showOnlyForStateGetManyByStore },
+		description:
+			'MongoDB ObjectId of the store whose locations to list (matches the API query parameter `store`)',
+	},
 	{
 		displayName: 'Page Number',
 		name: 'page',

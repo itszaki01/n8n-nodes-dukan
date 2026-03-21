@@ -26,12 +26,35 @@ export const stateDescription: INodeProperties[] = [
 				name: 'Get Many States',
 				value: 'getMany',
 				action: 'Get many states',
-				description: 'Get many states with pagination',
+				description: 'Get many states with pagination (uses the token store)',
 				routing: {
 					request: {
 						method: 'GET',
 						url: '/store-location-api',
 						qs: {
+							page: '={{$parameter.page}}',
+							limit: '={{$parameter.limit}}',
+							filter: '={{$parameter.filter}}',
+							select: '={{$parameter.select}}',
+							sort: '={{$parameter.sort}}',
+							populate: '={{$parameter.populate}}',
+							offset: '={{ $parameter.offset === 0 ? undefined : $parameter.offset }}',
+						},
+					},
+				},
+			},
+			{
+				name: 'Get Many States By Store',
+				value: 'getManyByStore',
+				action: 'Get many states by store',
+				description:
+					'Get many states for a given store ID',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/store-location-api/by-store',
+						qs: {
+							store: '={{$parameter.store}}',
 							page: '={{$parameter.page}}',
 							limit: '={{$parameter.limit}}',
 							filter: '={{$parameter.filter}}',
