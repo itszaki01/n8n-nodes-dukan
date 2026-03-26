@@ -1,6 +1,7 @@
 import type { INodeProperties } from 'n8n-workflow';
 import { teamUserCreateDescription } from './create';
 import { teamUserUpdateDescription } from './update';
+import { teamUserUpdatePasswordDescription } from './updatePassword';
 import { teamUserGetManyDescription } from './getMany';
 import { teamUserGetOneDescription } from './getOne';
 
@@ -76,6 +77,18 @@ export const teamUserDescription: INodeProperties[] = [
 					},
 				},
 			},
+			{
+				name: 'Update Password',
+				value: 'updatePassword',
+				action: 'Update a team user password',
+				description: 'Update a team user password',
+				routing: {
+					request: {
+						method: 'PATCH',
+						url: '={{"/user-store-api/updateUserStorePassword/" + $parameter.teamUserId}}',
+					},
+				},
+			},
 		],
 		default: 'getMany',
 	},
@@ -83,4 +96,5 @@ export const teamUserDescription: INodeProperties[] = [
 	...teamUserGetOneDescription,
 	...teamUserCreateDescription,
 	...teamUserUpdateDescription,
+	...teamUserUpdatePasswordDescription,
 ];
