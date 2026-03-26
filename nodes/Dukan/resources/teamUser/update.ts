@@ -1,4 +1,4 @@
-import type { INodeProperties } from 'n8n-workflow';
+import type { IExecuteSingleFunctions, IHttpRequestOptions, INodeProperties } from 'n8n-workflow';
 
 const showOnlyForTeamUserUpdate = {
 	operation: ['update'],
@@ -16,13 +16,65 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 		description: "The teamUser's ID to update",
 	},
 	{
+		displayName: 'Use JSON',
+		name: 'useJson',
+		type: 'boolean',
+		default: false,
+		displayOptions: {
+			show: showOnlyForTeamUserUpdate,
+		},
+		description: 'Whether to use JSON to define the payload',
+	},
+	{
+		displayName: 'JSON',
+		name: 'json',
+		type: 'json',
+		default: '{}',
+		displayOptions: {
+			show: {
+				...showOnlyForTeamUserUpdate,
+				useJson: [true],
+			},
+		},
+		description:
+			'JSON object. Optional fields: allowRecivingNewOrders (boolean), email (string), userFirstName (string), userLastName (string), userPhoneNumber (string), profileImage (string), role (StoreAdmin|StoreManager|StoreCallMember|StoreAccountent).',
+		routing: {
+			send: {
+				type: 'body',
+				property: '=',
+				value: '={{JSON.parse($parameter.json)}}',
+				preSend: [
+					async function (
+						this: IExecuteSingleFunctions,
+						requestOptions: IHttpRequestOptions,
+					): Promise<IHttpRequestOptions> {
+						const jsonString = this.getNodeParameter('json', '{}') as string;
+						try {
+							const parsedBody = JSON.parse(jsonString);
+							const cleanedBody = Object.fromEntries(
+								Object.entries(parsedBody).filter(([, value]) => value !== ''),
+							);
+							requestOptions.body = cleanedBody;
+						} catch {
+							throw new Error('Invalid JSON provided in the JSON field');
+						}
+						return requestOptions;
+					},
+				],
+			},
+		},
+	},
+	{
 		displayName: 'Additional Fields',
 		name: 'additionalFields',
 		type: 'collection',
 		placeholder: 'Add Field',
 		default: {},
 		displayOptions: {
-			show: showOnlyForTeamUserUpdate,
+			show: {
+				...showOnlyForTeamUserUpdate,
+				useJson: [false],
+			},
 		},
 		options: [
 			{
@@ -35,6 +87,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'allowRecivingNewOrders',
+						value: '={{$parameter.additionalFields.allowRecivingNewOrders}}',
 					},
 				},
 			},
@@ -49,7 +102,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'email',
-						value: '={{$parameter.email !== "" ? $parameter.email : undefined}}',
+						value: '={{$parameter.additionalFields.email !== "" ? $parameter.additionalFields.email : undefined}}',
 					},
 				},
 			},
@@ -63,7 +116,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'userFirstName',
-						value: '={{$parameter.userFirstName !== "" ? $parameter.userFirstName : undefined}}',
+						value: '={{$parameter.additionalFields.userFirstName !== "" ? $parameter.additionalFields.userFirstName : undefined}}',
 					},
 				},
 			},
@@ -77,7 +130,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'userLastName',
-						value: '={{$parameter.userLastName !== "" ? $parameter.userLastName : undefined}}',
+						value: '={{$parameter.additionalFields.userLastName !== "" ? $parameter.additionalFields.userLastName : undefined}}',
 					},
 				},
 			},
@@ -91,7 +144,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'userPhoneNumber',
-						value: '={{$parameter.userPhoneNumber !== "" ? $parameter.userPhoneNumber : undefined}}',
+						value: '={{$parameter.additionalFields.userPhoneNumber !== "" ? $parameter.additionalFields.userPhoneNumber : undefined}}',
 					},
 				},
 			},
@@ -105,7 +158,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'profileImage',
-						value: '={{$parameter.profileImage !== "" ? $parameter.profileImage : undefined}}',
+						value: '={{$parameter.additionalFields.profileImage !== "" ? $parameter.additionalFields.profileImage : undefined}}',
 					},
 				},
 			},
@@ -137,6 +190,7 @@ export const teamUserUpdateDescription: INodeProperties[] = [
 					send: {
 						type: 'body',
 						property: 'role',
+						value: '={{$parameter.additionalFields.role}}',
 					},
 				},
 			},
